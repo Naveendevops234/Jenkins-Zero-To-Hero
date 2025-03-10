@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-      image 'dcokernaveen/maven-abhishek-docker-agent:v1'
+      image 'dcokernaveen/maven-image:latest'
       args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
     }
   }
@@ -9,7 +9,7 @@ pipeline {
     stage('Checkout') {
       steps {
         sh 'echo passed'
-        //git branch: 'main', url: 'https://github.com/Naveendevops234/Jenkins-Zero-To-Hero'
+        //git branch: 'main', url: 'https://github.com/Naveendevops234/Jenkins-Zero-To-Hero.git'
       }
     }
     stage('Build and Test') {
@@ -21,7 +21,7 @@ pipeline {
     }
     stage('Static Code Analysis') {
       environment {
-        SONAR_URL = "http://13.201.71.115:9000/"
+        SONAR_URL = "http://3.85.77.197:9000/"
       }
       steps {
         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
@@ -31,7 +31,7 @@ pipeline {
     }
     stage('Build and Push Docker Image') {
       environment {
-        DOCKER_IMAGE = "dcokernaveen/my-jenkins-job:${BUILD_NUMBER}"
+        DOCKER_IMAGE = "dcokernaveen/ultimate-cicd:${BUILD_NUMBER}"
         // DOCKERFILE_LOCATION = "java-maven-sonar-argocd-helm-k8s/spring-boot-app/Dockerfile"
         REGISTRY_CREDENTIALS = credentials('docker-cred')
       }
